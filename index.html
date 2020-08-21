@@ -1,0 +1,98 @@
+<html>
+	<head>
+		<title>Deno App Store</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+		<script src="https://cdn.jsdelivr.net/npm/weightless@0.0.37/umd/weightless.min.js"></script>
+	</head>
+	<body style="margin:0;width:100%;height:100vh;background-color:#000000;display:flex;flex-direction:row;">
+        <wl-dialog id="dialog" fixed backdrop blockscrolling>
+            <div style="padding:50px;display:flex;flex-direction:column;align-items:center;">
+                <wl-textfield id="select" required label="History" outlined list="list" style="width:600px;"></wl-textfield>
+                <datalist id="list">
+                </datalist>
+                <wl-button flat inverted outlined style="color:#000000;margin-top:30px;" id="choose">Choose</wl-button>
+            </div>
+        </wl-dialog>
+		<div style="padding:50px;width:100%;display:flex;flex-direction:column;align-items:center;">
+			<wl-textfield id="url" required label="Deno file URL" style="--input-label-color:#ffffff;--input-color:#ffffff;width:50%;"></wl-textfield>
+			<wl-button flat inverted style="color:#ffffff;margin-top:30px;" id="history">History</wl-button>
+            <div style="margin-top:30px;color:#ffffff;display:flex;flex-direction:row;align-items:center;">
+                <wl-checkbox id="r"></wl-checkbox>
+                <div style="padding-left:10px;">Force re-download</div>
+            </div>
+			<wl-button flat inverted outlined style="color:#ffffff;margin-top:30px;" id="run">Run</wl-button>
+            <div id="out" style="width:50%;margin-top:30px;color:#ffffff;display:flex;flex-direction:column;">
+            </div>
+		</div>
+		<script>
+            window.Q = {};
+            location.search.substr(1).split('&').forEach(item => {window.Q[item.split('=')[0]] = item.split('=')[1];});
+            var list = [];
+            var s = localStorage.getItem('history');
+            if(!s){
+                localStorage.setItem('history', '[]');
+            }
+            if(s){
+                list = JSON.parse(s);
+            }
+            if(list.length == 0){
+                document.querySelector('#url').value = 'https://raw.githubusercontent.com/brook-community/brook-denoapp.js/master/main.js';
+            }
+            if(list.length != 0){
+                document.querySelector('#url').value = list[0];
+            }
+            if(Q.url){
+                document.querySelector('#url').value = Q.url;
+            }
+			document.querySelector('#history').addEventListener('click', async e=>{
+                document.querySelector("#dialog").show();
+                var s = "";
+                list.forEach(v=>{
+                    s += `<option>${v}</option>`;
+                });
+                document.querySelector('#list').innerHTML = s;
+            });
+			document.querySelector('#choose').addEventListener('click', async e=>{
+                var s = document.querySelector('#select').value;
+                if(s){
+                    document.querySelector('#url').value = s;
+                }
+                document.querySelector("#dialog").hide();
+            });
+
+            var socket = null;
+			document.querySelector('#run').addEventListener('click', async e=>{
+                if(socket != null){
+                    socket.close();
+                }
+                socket = new WebSocket('ws://localhost:2090/ws?'+new URLSearchParams({
+					url: document.querySelector('#url').value,
+                    r: document.querySelector('#r').checked ? 1 : "",
+				}));
+                socket.addEventListener('open', function (event) {
+                    if(document.querySelector('#url').value){
+                        if(list.length == 0 || list[0] != document.querySelector('#url').value){
+                            list.splice(0, 0, document.querySelector('#url').value);
+                            localStorage.setItem('history', JSON.stringify(list));
+                        }
+                    }
+                    document.querySelector('#out').innerHTML = "";
+                });
+                socket.addEventListener('close', function (event) {
+                    socket = null;
+                });
+                socket.addEventListener('error', function (event) {
+                    socket = null;
+                    alert('Can not connect to DenoApp');
+                });
+                socket.addEventListener('message', function (event) {
+                    var div = document.createElement('div');
+                    div.innerText = event.data;
+                    document.querySelector('#out').appendChild(div);
+                });
+			});
+		</script>
+	</body>
+</html>
