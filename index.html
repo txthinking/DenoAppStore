@@ -7,16 +7,19 @@
 		<script src="https://cdn.jsdelivr.net/npm/weightless@0.0.37/umd/weightless.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bowser@1.9.4/src/bowser.min.js"></script>
 	</head>
-	<body style="margin:0;width:100%;height:100vh;background-color:#000000;color:#ffffff;display:flex;flex-direction:row;">
-		<div id="off" style="display:none;padding:50px;width:100%;flex-direction:column;align-items:center;">
+	<body style="margin:0;width:100%;height:100vh;background-color:#000000;color:#ffffff;display:flex;flex-direction:row;justify-content: space-between;">
+		<div style="padding:30px 0px 0px 30px;">
+            <a href="https://github.com/txthinking/denoapp.store" style="text-decoration-line:none;"><wl-button flat inverted style="color:#ffffff;">Deno App Store</wl-button></a>
+        </div>
+		<div id="off" style="display:none;padding-top:100px;width:100%;flex-direction:column;align-items:center;">
             <div style="color:#ff0000;">Please make sure that the Deno App Store client is running</div>
             <a id="macOS" href="https://github.com/txthinking/denoapp.store/releases/download/v1.3.0/DenoAppStore.dmg" style="text-decoration-color:#ffffff;color:#ffffff;margin-top:30px;display:none;">DenoAppStore.dmg</a>
             <a id="Windows" href="https://github.com/txthinking/denoapp.store/releases/download/v1.3.0/DenoAppStore.exe" style="text-decoration-color:#ffffff;color:#ffffff;margin-top:30px;display:none;">DenoAppStore.exe</a>
             <div style="color:#ff0000;margin-top:30px;">After Deno App Store client is running, refresh page</div>
 			<wl-button flat inverted outlined style="color:#ffffff;margin-top:30px;" id="refresh">Refresh</wl-button>
         </div>
-		<div id="on" style="padding:50px;width:100%;display:flex;flex-direction:column;align-items:center;">
-			<wl-textfield id="url" required label="Deno file URL" style="--input-label-color:#ffffff;--input-color:#ffffff;width:50%;"></wl-textfield>
+		<div id="on" style="width:100%;padding-top:100px;display:flex;flex-direction:column;align-items:center;">
+			<wl-textfield id="url" required label="Deno file URL(support parameters)" style="--input-label-color:#ffffff;--input-color:#ffffff;width:70%;"></wl-textfield>
 			<wl-button flat inverted style="color:#ffffff;margin-top:30px;" id="history">History</wl-button>
             <div style="margin-top:30px;color:#ffffff;display:flex;flex-direction:row;align-items:center;">
                 <wl-checkbox id="r"></wl-checkbox>
@@ -26,6 +29,9 @@
             <div id="out" style="width:50%;margin-top:30px;color:#ffffff;display:flex;flex-direction:column;">
             </div>
 		</div>
+		<div style="padding:30px 30px 0px 0px;">
+            <a href="https://github.com/txthinking/denoapp.store" style="text-decoration-line:none;"><wl-button flat inverted style="color:#ffffff;">Github</wl-button></a>
+        </div>
 
         <wl-dialog id="dialog" fixed backdrop blockscrolling>
             <div style="padding:50px;display:flex;flex-direction:column;align-items:center;">
