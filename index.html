@@ -50,6 +50,9 @@
             }else{
                 alert('Unsupport your OS yet.');
             }
+	    if(bowser.name == "Safari"){
+		    alert('Unsupport your browser, recommand Chrome or Firefox');
+	    }
             window.Q = {};
             location.search.substr(1).split('&').forEach(item => {window.Q[item.split('=')[0]] = decodeURIComponent(item.split('=')[1]);});
             var list = [];
