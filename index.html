@@ -51,7 +51,7 @@
                 alert('Unsupport your OS yet.');
             }
             window.Q = {};
-            location.search.substr(1).split('&').forEach(item => {window.Q[item.split('=')[0]] = item.split('=')[1];});
+            location.search.substr(1).split('&').forEach(item => {window.Q[item.split('=')[0]] = decodeURIComponent(item.split('=')[1]);});
             var list = [];
             var s = localStorage.getItem('history');
             if(!s){
