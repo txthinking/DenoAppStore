@@ -63,9 +63,6 @@
             if(s){
                 list = JSON.parse(s);
             }
-            if(list.length == 0){
-                document.querySelector('#url').value = 'https://raw.githubusercontent.com/brook-community/brook-denoapp.js/master/main.js';
-            }
             if(list.length != 0){
                 document.querySelector('#url').value = list[0];
             }
